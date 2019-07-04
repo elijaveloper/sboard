@@ -1,0 +1,32 @@
+@font-face{
+    font-family:"7seg";
+    src: url("7seg.ttf");
+}
+
+.content{
+    margin: auto;
+    text-align: center;
+}
+
+.number{
+    font-size: 4em;
+    font-family: '7seg'; 
+}
+
+.row{
+    display: block;
+    width: 100%;
+}
+
+.col{
+    display: inline-block;
+    padding: 25px;
+}
+
+.label{
+    font-size: 3em;
+}
+
+button{
+    font-size: 2em;
+}
