@@ -12,6 +12,8 @@ var v_home_fouls = 0;
 var v_default_time = 10 * 60 * 1000;
 var v_default_shot = 24 * 1000;
 var v_timer_speed = 100;
+var v_timer_skipms = 300;
+var v_timer_delta = 0;
 
 var io = io();
 var socket;
@@ -66,12 +68,16 @@ function start(id){
                 timesup(id);
             }else{
                 v_times[id] -= v_timer_speed;
+                v_timer_delta += v_timer_speed;
+                if(v_timer_delta >= v_timer_skipms){
+                    io.emit("emit",{
+                        id:id,
+                        value:mtm(v_times[id])
+                    });
+                    v_timer_delta = 0;
+                }
             }
             document.getElementById(id).innerHTML = mtm(v_times[id]);
-            io.emit("emit",{
-                id:id,
-                value:mtm(v_times[id])
-            });
         }
     }, v_timer_speed);
     document.getElementById(id+"_start").style.display = "none";

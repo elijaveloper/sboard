@@ -2,8 +2,8 @@
   "name": "sboard",
   "version": "0.0.0",
   "private": true,
-  "scripts":{
-    "start":"node app.js"
+  "scripts": {
+    "start": "node app.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
