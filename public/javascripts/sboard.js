@@ -116,7 +116,6 @@ function shotclock(id){
 }
 
 function timesup(id){
-    console.log("timesup");
     clearInterval(v_timers[id]);
     notif("#f00")
 }
