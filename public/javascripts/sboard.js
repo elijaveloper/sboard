@@ -33,25 +33,20 @@ var v_default_times = {
     "shot":v_default_shot
 }
 
-
-function away_points(points){
-    v_away_points += points;
-    document.getElementById("away").innerHTML = v_away_points;
+var v_points = {
+    "away_points":v_away_points,
+    "home_points":v_home_points,
+    "home_fouls":v_home_fouls,
+    "away_fouls":v_away_fouls
 }
 
-function home_points(points){
-    v_home_points += points;
-    document.getElementById("home").innerHTML = v_home_points;
-}
-
-function home_fouls(points){
-    v_home_fouls += points;
-    document.getElementById("home_foul").innerHTML = v_home_fouls;
-}
-
-function away_fouls(points){
-    v_away_fouls += points;
-    document.getElementById("away_foul").innerHTML = v_away_fouls;
+function points(id,p){
+    console.log(v_points[id]);
+    v_points[id] += p;
+    if(v_points[id] <= 0){
+        v_points[id] = 0;
+    }
+    document.getElementById(id).innerHTML = v_points[id];
 }
 
 function start(id){
@@ -104,8 +99,15 @@ function shotclock(id){
 
 function timesup(id){
     console.log("timesup");
+    clearInterval(v_timers[id]);
+    notif("#f00")
 }
 
+function notif(color){
+    document.getElementsByTagName("body")[0].stlye.backgroundColor = color;
+}
+
+//helper functions
 function mtm(milli)
 {
       var milliseconds = (milli % 1000) / 100;

@@ -3,48 +3,66 @@ extends layout
 block scripts
   script(src="/javascripts/sboard.js")
   link(rel="stylesheet",href="/stylesheets/sboard.css")
+  link(rel="stylesheet",href="/stylesheets/3dbuttons.css")
   link(rel="stylesheet",href="https://fontlibrary.org/face/segment7")
+  link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Russo+One&display=swap")
 
 block content
   .content
     .row  
       .col
         .label Home
-        .number#home 0
+        .number#home_points 0
         +pointcontrols("home_points")
       .col
-        .label Time
-        .number#time 00:00
-        +timecontrols("time")
-
         .label Shot
         .number#shot 00
         +timecontrols("shot")
-        button(value=btn,id=id+"_"+"shotclock",onclick="shotclock('shot')") shot
+        button(value=btn,id=id+"_"+"shotclock",onclick="shotclock('shot')",class="btn btn-lg btn3d btn-success") shot
       .col
         .label Away
-        .number#away 0
+        .number#away_points 0
         +pointcontrols("away_points")
     .row
       .col
         .label Home Fouls
-        .number#home_foul 0
+        .number#home_fouls 0
         +pointcontrols("home_fouls")
       .col
-        #sponsor
+        .label Time
+        .number#time 00:00
+        +timecontrols("time")
       .col
         .label Away Fouls
-        .number#away_foul 0
+        .number#away_fouls 0
         +pointcontrols("away_fouls")
 
 mixin timecontrols(id)
   .timecontrols
-    button(value=btn,id=id+"_"+"start",onclick="start"+"('" + id + "')") start
+    - var classes = ["btn","btn-lg","btn3d"]
+    - var buttons = {"start":"btn-success","stop":"btn-danger","pause":"btn-primary","reset":"btn-warning"}
+    button(
+      value=btn,id=id+"_"+"start",
+      onclick="start"+"('" + id + "')",
+      class=classes,
+      class=buttons["start"]
+    ) start
     for btn in ["pause","stop","reset"]
-      button(value=btn,id=id+"_"+btn,onclick=btn+"('" + id + "')",style={display:"none"}) #{btn}
+      button(
+        value=btn,id=id+"_"+btn,
+        onclick=btn+"('" + id + "')",
+        style={display:"none"},
+        class=classes,
+        class=buttons[btn]
+      ) #{btn}
 
 mixin pointcontrols(id)
   .pointcontrols
     for btn in ["-1","1","2","3"]
-      button(value=btn,id=id+"_"+btn,onclick=id+"(" + btn + ")") #{btn}
+      button(
+        value=btn,
+        id=id+"_"+btn,
+        onclick="points('" + id + "'," + btn + ")",
+        class="btn btn-lg btn3d btn-default"
+      ) #{btn}
 
