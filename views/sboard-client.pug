@@ -2,11 +2,15 @@ extends layout
 
 block scripts
   script(src="/javascripts/socket.io.js")
-  script(src="/javascripts/sboard.js")
+  script(src="/javascripts/sboard-client.js")
   link(rel="stylesheet",href="/stylesheets/sboard.css")
   link(rel="stylesheet",href="/stylesheets/3dbuttons.css")
   link(rel="stylesheet",href="https://fontlibrary.org/face/segment7")
   link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Russo+One&display=swap")
+  style.
+    body{
+      font-size: 1.25em;
+    }
 
 block content
   .content
@@ -14,29 +18,28 @@ block content
       .col
         .label Home
         .number#home_points 0
-        +pointcontrols("home_points")
+        //- +pointcontrols("home_points")
       .col
         .label Shot
         .number#shot 00
-        +timecontrols("shot")
-        button(value=btn,id=id+"_"+"shotclock",onclick="shotclock('shot')",class="btn btn-lg btn3d btn-success") shot
+        //- +timecontrols("shot")
       .col
         .label Away
         .number#away_points 0
-        +pointcontrols("away_points")
+        //- +pointcontrols("away_points")
     .row
       .col
         .label Home Fouls
         .number#home_fouls 0
-        +pointcontrols("home_fouls")
+        //- +pointcontrols("home_fouls")
       .col
         .label Time
         .number#time 00:00
-        +timecontrols("time")
+        //- +timecontrols("time")
       .col
         .label Away Fouls
         .number#away_fouls 0
-        +pointcontrols("away_fouls")
+        //- +pointcontrols("away_fouls")
 
 mixin timecontrols(id)
   .timecontrols

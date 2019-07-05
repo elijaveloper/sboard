@@ -13,6 +13,13 @@ var v_default_time = 10 * 60 * 1000;
 var v_default_shot = 24 * 1000;
 var v_timer_speed = 100;
 
+var io = io();
+var socket;
+
+window.onload = function(e){
+    socket = io.connect('http://127.0.0.1:3000');
+}
+
 var v_times = {
     "time":v_time,
     "shot":v_shot
@@ -41,12 +48,15 @@ var v_points = {
 }
 
 function points(id,p){
-    console.log(v_points[id]);
     v_points[id] += p;
     if(v_points[id] <= 0){
         v_points[id] = 0;
     }
     document.getElementById(id).innerHTML = v_points[id];
+    io.emit("emit",{
+        id:id,
+        value:v_points[id]
+    });
 }
 
 function start(id){
@@ -58,6 +68,10 @@ function start(id){
                 v_times[id] -= v_timer_speed;
             }
             document.getElementById(id).innerHTML = mtm(v_times[id]);
+            io.emit("emit",{
+                id:id,
+                value:mtm(v_times[id])
+            });
         }
     }, v_timer_speed);
     document.getElementById(id+"_start").style.display = "none";
@@ -86,6 +100,10 @@ function reset(id){
         document.getElementById(id+"_start").style.opacity=1;
         v_times[id] = v_default_times[id];
         document.getElementById(id).innerHTML = mtm(v_times[id]);
+        io.emit("emit",{
+            id:id,
+            value:mtm(v_times[id])
+        });
         document.getElementById(id+"_start").style.display = "inline-block";
         document.getElementById(id+"_pause").style.display = "none";
         document.getElementById(id+"_stop").style.display = "none";
