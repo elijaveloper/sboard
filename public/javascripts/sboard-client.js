@@ -8,6 +8,7 @@ var v_shot_timer;
 var v_shot_paused = false;
 var v_away_fouls = 0;
 var v_home_fouls = 0;
+var v_qtr = 1;
 
 var v_default_time = 10 * 60 * 1000;
 var v_default_shot = 24 * 1000;
@@ -17,9 +18,17 @@ var io = io();
 var socket;
 
 window.onload = function(e){
-    socket = io.connect('http://127.0.0.1:3000');
+    socket = io.connect();
     socket.on("emit",function(data){
         document.getElementById(data.id).innerHTML = data.value;
+    });
+
+    socket.on("timesup",function(data){
+        timesup();
+    });
+
+    socket.on("reset",function(data){
+        notif("#555");
     });
 }
 
@@ -47,15 +56,16 @@ var v_points = {
     "away_points":v_away_points,
     "home_points":v_home_points,
     "home_fouls":v_home_fouls,
-    "away_fouls":v_away_fouls
+    "away_fouls":v_away_fouls,
+    "qtr":v_qtr
 }
 
-function timesup(id){
+function timesup(){
     notif("#f00");
 }
 
 function notif(color){
-    document.getElementsByTagName("body")[0].stlye.backgroundColor = color;
+    document.getElementById("notif").style.borderColor = color;
 }
 
 //helper functions

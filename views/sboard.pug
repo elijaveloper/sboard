@@ -9,7 +9,7 @@ block scripts
   link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Russo+One&display=swap")
 
 block content
-  .content
+  .content#notif
     .row  
       .col
         .label Home
@@ -29,6 +29,10 @@ block content
         .label Home Fouls
         .number#home_fouls 0
         +pointcontrols("home_fouls")
+      .col
+        .label Qtr
+        .number#qtr 15T
+        +pointcontrols("qtr")
       .col
         .label Time
         .number#time 00:00

@@ -7,13 +7,9 @@ block scripts
   link(rel="stylesheet",href="/stylesheets/3dbuttons.css")
   link(rel="stylesheet",href="https://fontlibrary.org/face/segment7")
   link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Russo+One&display=swap")
-  style.
-    body{
-      font-size: 1.25em;
-    }
 
 block content
-  .content
+  .content#notif
     .row  
       .col
         .label Home
@@ -32,6 +28,9 @@ block content
         .label Home Fouls
         .number#home_fouls 0
         //- +pointcontrols("home_fouls")
+      .col
+        .label Qtr
+        .number#qtr 15T
       .col
         .label Time
         .number#time 00:00

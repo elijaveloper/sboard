@@ -8,6 +8,7 @@ var v_shot_timer;
 var v_shot_paused = false;
 var v_away_fouls = 0;
 var v_home_fouls = 0;
+var v_qtr = 1;
 
 var v_default_time = 10 * 60 * 1000;
 var v_default_shot = 24 * 1000;
@@ -19,7 +20,7 @@ var io = io();
 var socket;
 
 window.onload = function(e){
-    socket = io.connect('http://127.0.0.1:3000');
+    socket = io.connect();
 }
 
 var v_times = {
@@ -46,7 +47,8 @@ var v_points = {
     "away_points":v_away_points,
     "home_points":v_home_points,
     "home_fouls":v_home_fouls,
-    "away_fouls":v_away_fouls
+    "away_fouls":v_away_fouls,
+    "qtr":v_qtr
 }
 
 function points(id,p){
@@ -54,10 +56,16 @@ function points(id,p){
     if(v_points[id] <= 0){
         v_points[id] = 0;
     }
-    document.getElementById(id).innerHTML = v_points[id];
+    let temp = v_points[id];
+    if(id == "qtr"){
+        v_points[id] = v_points[id] >= 4 ? 4 : v_points[id];
+        v_points[id] = v_points[id] <= 1 ? 1 : v_points[id];
+        temp = ordinal(temp);
+    }
+    document.getElementById(id).innerHTML = temp;
     io.emit("emit",{
         id:id,
-        value:v_points[id]
+        value:temp
     });
 }
 
@@ -110,10 +118,12 @@ function reset(id){
             id:id,
             value:mtm(v_times[id])
         });
+        io.emit("reset",{});
         document.getElementById(id+"_start").style.display = "inline-block";
         document.getElementById(id+"_pause").style.display = "none";
         document.getElementById(id+"_stop").style.display = "none";
         document.getElementById(id+"_reset").style.display = "none";
+        notif("#555");
     }
 }
 
@@ -123,11 +133,16 @@ function shotclock(id){
 
 function timesup(id){
     clearInterval(v_timers[id]);
+    for(var i=0; i<10; i++){
+        io.emit("timesup",{
+            id:id
+        });
+    }
     notif("#f00")
 }
 
 function notif(color){
-    document.getElementsByTagName("body")[0].stlye.backgroundColor = color;
+    document.getElementById("notif").style.borderColor = color;
 }
 
 //helper functions
@@ -138,4 +153,11 @@ function mtm(milli)
       var minutes = Math.floor((milli / (60 * 1000)) % 60);
 
       return (minutes == 0 ? "" : minutes) + (minutes == 0 ? "" : ":") + seconds + "." + milliseconds;
+}
+
+function ordinal(num){
+    let o = ["15t","2nd","3rd","4th"];
+    num = num >= 4 ? 4 : num;
+    num = num <= 1 ? 1 : num;
+    return o[num-1];
 }
