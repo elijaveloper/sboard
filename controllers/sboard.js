@@ -5,6 +5,12 @@ class controller{
             socket.on("emit",function(data){
                 io.emit("emit",data);
             });
+            socket.on("timesup",function(data){
+                io.emit("timesup",data);
+            });
+            socket.on("reset",function(data){
+                io.emit("reset",data);
+            });
         });
         res.render("sboard");
     }

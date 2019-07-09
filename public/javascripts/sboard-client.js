@@ -29,7 +29,7 @@ window.onload = function(e){
 
     socket.on("reset",function(data){
         notif("#555");
-    });
+    }); 
 }
 
 var v_times = {

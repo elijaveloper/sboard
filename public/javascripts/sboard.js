@@ -63,7 +63,7 @@ function points(id,p){
         temp = ordinal(temp);
     }
     document.getElementById(id).innerHTML = temp;
-    io.emit("emit",{
+    socket.emit("emit",{
         id:id,
         value:temp
     });
@@ -78,7 +78,7 @@ function start(id){
                 v_times[id] -= v_timer_speed;
                 v_timer_delta += v_timer_speed;
                 if(v_timer_delta >= v_timer_skipms){
-                    io.emit("emit",{
+                    socket.emit("emit",{
                         id:id,
                         value:mtm(v_times[id])
                     });
@@ -113,12 +113,13 @@ function reset(id){
         clearInterval(v_timers[id]);
         document.getElementById(id+"_start").style.opacity=1;
         v_times[id] = v_default_times[id];
+        v_pauses[id] = false;
         document.getElementById(id).innerHTML = mtm(v_times[id]);
-        io.emit("emit",{
+        socket.emit("emit",{
             id:id,
             value:mtm(v_times[id])
         });
-        io.emit("reset",{});
+        socket.emit("reset",{});
         document.getElementById(id+"_start").style.display = "inline-block";
         document.getElementById(id+"_pause").style.display = "none";
         document.getElementById(id+"_stop").style.display = "none";
@@ -129,12 +130,21 @@ function reset(id){
 
 function shotclock(id){
     v_times[id] = v_default_times[id];
+    document.getElementById(id).innerHTML = mtm(v_times[id]);
+}
+
+function shotclock14(){
+    let a = confirm("Reset the shotclock to 14 seconds?");
+    if(a){
+        v_times["shot"] = 14000;
+        document.getElementById("shot").innerHTML = mtm(v_times["shot"]);
+    }
 }
 
 function timesup(id){
     clearInterval(v_timers[id]);
     for(var i=0; i<10; i++){
-        io.emit("timesup",{
+        socket.emit("timesup",{
             id:id
         });
     }
